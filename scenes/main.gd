@@ -17,12 +17,17 @@ func new_game():
 	score = 0
 	$Player.start($StarterPosition.position)
 	$StartTimer.start()
+	$hud.update_score(score)
+	$hud.show_message("Get Ready")
+	get_tree().call_group("mobs","queue_free")
+	$MusicBkg.play()
 
 func game_over():
 	$ScoreTimer.stop()
 	$MobTimer.stop()
-	pass # Replace with function body.
-
+	$hud.show_game_over()
+	$MusicBkg.stop()
+	$GameoverSnd.play()
 
 func _on_mob_timer_timeout():
 	# Create a new instance of the Mob scene.
@@ -53,9 +58,8 @@ func _on_mob_timer_timeout():
 
 func _on_score_timer_timeout():
 	score += 1
-	pass # Replace with function body.
+	$hud.update_score(score)
 
 func _on_start_timer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
-	pass # Replace with function body.
